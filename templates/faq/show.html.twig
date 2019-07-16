@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+
+    <h1 id="header-margin">{{ question.title }}</h1>
+
+  
+
+    <a href="{{ path('faq_index')}}">
+        Retour a la liste de questions
+            
+        </a>
+
+    <h2>
+        le + de question 
+    </h2>
+
+    <p>{{ question.body }}</p>
+
+    
+
+    <h2 id="answer">les reponses </h2>
+      
+    <hr>
+
+    <section>
+   
+        <div class="answer">
+            <div class="row">
+                <div class="col-3">
+                    {{answer.author}}
+                </div>
+                <div class="col">
+                    {{answer.body | raw}}
+
+                </div>
+
+            </div>
+
+
+        </div>
+            
+        
+        
+
+
+
+
+
+
+
+
+    </section>
+
+{% endblock %}

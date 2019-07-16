@@ -1,0 +1,11 @@
+
+
+{% block title %}New Answer{% endblock %}
+
+{% block content %}
+    <h1>Create new Answer</h1>
+
+    {{ include('backend/answer/_form.html.twig') }}
+
+    <a href="{{ path('backend_answer_index', { 'id' : question.id}) }}">back to list</a>
+{% endblock %}

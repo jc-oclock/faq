@@ -1,0 +1,21 @@
+
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <h1>Liste des films</h1>
+
+    <ul>
+        {% for question in questions %}
+
+            <li>
+                <a href=" {{ path('faq_show', {'id': question.id }) }}">
+                    {{ question.title }}
+                </a>
+            </li>
+
+        {% endfor %}
+
+    </ul>
+
+{% endblock %}

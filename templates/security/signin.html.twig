@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}sign in!{% endblock %}
+
+{% block content %}
+
+{{ form_start(form)}}
+{{ form_row(form.username, {'label': 'username', 'attr':{'placeholder': 'username'}})}} 
+{{ form_row(form.email, {'label': 'email', 'attr':{'placeholder': 'email'}})}}
+{{ form_row(form.password, {'label': 'password', 'attr':{'placeholder': 'password'}})}}
+
+<button type="submit" class="btn btn-success">Register !</button>
+{{ form_end(form)}}
+
+
+{% endblock %}

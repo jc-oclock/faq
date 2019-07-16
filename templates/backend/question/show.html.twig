@@ -1,0 +1,33 @@
+{% extends 'backend_layout.html.twig' %}
+
+{% block title %}Question{% endblock %}
+
+{% block content %}
+    <h1>Question</h1>
+
+    <table class="table">
+        <tbody>
+            
+            <tr>
+                <th>Author</th>
+                <td>{{ question.author }}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+                <td>{{ question.title }}</td>
+            </tr>
+            <tr>
+                <th>Body</th>
+                <td>{{ question.body }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    {{ include('backend/answer/new.html.twig') }}
+
+    <a href="{{ path('backend_question_index') }}">back to list</a>
+
+    
+
+   
+{% endblock %}

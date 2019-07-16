@@ -1,0 +1,38 @@
+<div class="row movie-main">
+
+    <div class="col-4">
+        <a href="{{ path('faq_index', { 'id': question.id }) }}">
+          
+        </a>
+    </div>
+
+    <div class="col-8">
+
+        <p>
+            <a href="{{ path('faq_index', { 'id': question.id }) }}" class="title">
+                {{ question.title }}
+            </a>
+        </p>
+
+        <p>
+            {% for tag in question.tag %}
+            
+                {{ tag.name }}
+                
+                {% if not loop.last %}
+                , 
+                {% endif %}
+            {% endfor %}
+        </p>
+
+       
+            
+        <p class="summary">
+            {{ question.body }}
+        </p>
+   
+        
+    </div>
+
+</div>
+<hr>

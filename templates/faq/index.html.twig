@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block sidebar %}
+    <div class="col-2" id="sidebar">
+        <h3>
+            Last 10
+        </h3>
+            
+        {% for question in questions %}
+            <div>
+                <a href="{{ path('faq_show', {'id': question.id })}}">
+                    {{ question.title }}
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+
+{% block content %}
+
+    <h2 id="header-margin">
+        Retrouvez les dernieres questions posées :
+    </h2>
+
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+
+    <a class="btn btn-success" href="{{ path('backend_question_new') }}">
+        Ask a question
+        <i class="fas fa-plus-circle"></i> 
+    </a>
+
+    {% endif %}
+
+    <ul>
+
+        {% for question in questions %}
+
+            
+            <div>
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <a href="{{ path('backend_question_show', {'id': question.id })}}">
+                            {{ question.title }}
+                        </a>
+                        {{question.body | slice(0, 100) ~ '...'}} <a href="{{ path('backend_question_show', {'id': question.id })}}">Lire la suite</a>
+
+
+                    {% else %}
+                <a href="{{ path('faq_show', {'id': question.id })}}">
+                    {{ question.title }}
+                </a>
+                {{question.body | slice(0, 100) ~ '...'}} <a href="{{ path('faq_show', {'id': question.id })}}">Lire la suite</a>
+            </div>
+            {% endif %}
+            <hr>
+
+        {% else %}
+
+            Aucun film ne correspond à la recherche recherche : <strong> {{ searchTitle }} </strong>
+            
+        {% endfor %}
+        
+    </ul>
+
+{% endblock %}
