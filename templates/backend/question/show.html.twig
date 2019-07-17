@@ -1,33 +1,56 @@
-{% extends 'backend_layout.html.twig' %}
-
-{% block title %}Question{% endblock %}
+{% extends 'base.html.twig' %}
 
 {% block content %}
-    <h1>Question</h1>
 
-    <table class="table">
-        <tbody>
+    <h1 id="header-margin">{{ question.title }}</h1>
+
+  
+
+    <a href="{{ path('faq_index')}}">
+        Retour a la liste de questions
             
-            <tr>
-                <th>Author</th>
-                <td>{{ question.author }}</td>
-            </tr>
-            <tr>
-                <th>Title</th>
-                <td>{{ question.title }}</td>
-            </tr>
-            <tr>
-                <th>Body</th>
-                <td>{{ question.body }}</td>
-            </tr>
-        </tbody>
-    </table>
+        </a>
 
-    {{ include('backend/answer/new.html.twig') }}
+    <h2>
+        le + de question 
+    </h2>
 
-    <a href="{{ path('backend_question_index') }}">back to list</a>
+    {% for tag in question.tag %}
+    <h4>
+        dans la categorie :  {{ tag.name }}
+    </h4>
+    {% endfor %}
+
+    <p>{{ question.body }}</p>
 
     
 
-   
+    <h2 id="answer">les reponses </h2>
+      
+    <hr>
+
+    <section>
+            {% for answer in question.answers %}
+           
+        <div class="answer">
+            <div class="row">
+                <div class="col-3">
+                    {{answer.author}}
+                </div>
+                <div class="col">
+                    {{answer.body | raw}}
+
+                </div>
+
+            </div>
+
+
+        </div>
+            
+        {% endfor %}
+
+    </section>
+
+    {{ include('backend/answer/new.html.twig') }}
+
 {% endblock %}

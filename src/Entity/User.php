@@ -2,17 +2,12 @@
 namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
-/*
- Pour obtenir de l'aide sur les option supplementaires que peuvent prendre certaines commandes utiliser l'option --help
- ex: console make:entity --help
- Pour regenerer  /completer les getter / setter de mon entité si il en manque :
- php bin/console make:entity --regenerate
- */
+
 /**
- * @ORM\Table(name="user")
+ * 
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  */
-class User implements UserInterface
+class User implements UserInterface, \Serializable
 {
     /**
      * @ORM\Column(type="integer")
@@ -21,26 +16,24 @@ class User implements UserInterface
      */
     private $id;
     /**
-     * @ORM\Column(type="string", length=25)
+     * @ORM\Column(type="string", length=255)
      */
     private $username;
     /**
-     * @ORM\Column(type="string", length=64)
+     * @ORM\Column(type="string", length=255)
      */
     private $password;
     /**
-     * @ORM\Column(type="string", length=254)
+     * @ORM\Column(type="string", length=255)
      */
     private $email;
-   
-   
-   
-    public function __construct()
-    {
-        $this->isActive = true;
-        // may not be needed, see section on salt below
-        // $this->salt = md5(uniqid('', true));
-    }
+
+    /**
+    * @ORM\Column(type="json")
+    */
+    private $roles = [];
+    
+    
     public function getUsername()
     {
         return $this->username;
@@ -64,29 +57,39 @@ class User implements UserInterface
      */
     public function getRoles(): array // fonction necessaire pour security.yml => ceci n'est pas un getter en relation avec ma BDD
     {
-        $roles = [];
-        if(!is_null($this->role)){
-            $roles[] = $this->role->getCode(); // ici on stockera le code associé dans la BDD dans le genre ROLE_USER, ROLE_ADMIN, ROLE_MEMBER etc ...
-        } else {
-            $roles[] = 'ROLE_USER'; // par defaut si notre utilisateur a été stocké dans role on retournera role_user pour que symfony ne plante pas
-        }
-        return $roles;
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+    
+        return array_unique($roles);
     }
-    //ici nous retrouvons les vrai getter /setter de notre propriété ici 1,1 vers 1,N
-    public function getRole(): ?Role
-    {
-        return $this->role;
-    }
-    public function setRole(?Role $role): self
-    {
-        $this->role = $role;
-        return $this;
-    }
+    
+    
     public function eraseCredentials()
     {
     }
-  
-   
+    /** @see \Serializable::serialize() */
+    public function serialize()
+    {
+        return serialize([
+            $this->id,
+            $this->username,
+            $this->password,
+            // see section on salt below
+            // $this->salt,
+        ]);
+    }
+    /** @see \Serializable::unserialize() */
+    public function unserialize($serialized)
+    {
+        list (
+            $this->id,
+            $this->username,
+            $this->password,
+            // see section on salt below
+            // $this->salt
+        ) = unserialize($serialized, ['allowed_classes' => false]);
+    }
     public function getId(): ?int
     {
         return $this->id;
@@ -96,9 +99,6 @@ class User implements UserInterface
         $this->username = $username;
         return $this;
     }
-
-   
-
     //actuellement ceci est un patch "= null" pour eviter le probleme avec notre formulaire
     public function setPassword(string $password = null): self
     {
@@ -115,5 +115,7 @@ class User implements UserInterface
         return $this;
     }
     
+    
+   
     
 }

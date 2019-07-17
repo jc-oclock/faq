@@ -28,7 +28,7 @@ security:
         faqdb_superprovider:
             entity: #type de provider
                 class: App\Entity\User
-                property: email
+                property: username
     
      # permet de definir les regles de mon authentification 
      # par defaut j'ai 2 section prevue par symfony : les regles de l'environnement de dev et celle globale a mon application (main)
@@ -39,7 +39,7 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-            provider: in_memory
+            
 
         main:
             anonymous: true #permet au visiteur d'acceder a minima a une partie du contenu sans etre loggué
@@ -51,7 +51,7 @@ security:
             # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
             
             form_login: 
-                username_parameter: _email
+                username_parameter: _username
                 login_path: app_login
                 check_path: app_login
               
@@ -86,8 +86,8 @@ security:
         - { path: "^\/backend\/[a-z]+\/[0-9]+", roles: ROLE_USER} 
         - { path: "^\/backend", roles: ROLE_USER}
         - { path: "^\/backend/tag", roles: ROLE_ADMIN}
-
-        - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/admin, roles: ROLE_USER }
+        - { path: ^/admin/login, roles: ROLE_USER }
 
 
 

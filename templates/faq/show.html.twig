@@ -2,6 +2,8 @@
 
 {% block content %}
 
+{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+
     <h1 id="header-margin">{{ question.title }}</h1>
 
   
@@ -15,6 +17,12 @@
         le + de question 
     </h2>
 
+    {% for tag in question.tag %}
+    <h4>
+        dans la categorie :  {{ tag.name }}
+    </h4>
+    {% endfor %}
+
     <p>{{ question.body }}</p>
 
     
@@ -24,7 +32,8 @@
     <hr>
 
     <section>
-   
+
+           
         <div class="answer">
             <div class="row">
                 <div class="col-3">
@@ -40,16 +49,64 @@
 
         </div>
             
-        
-        
-
-
-
-
-
-
-
+       
 
     </section>
+
+    {{ include('backend/answer/new.html.twig') }}
+
+    {% else %}
+
+
+    <h1 id="header-margin">{{ question.title }}</h1>
+
+  
+
+    <a href="{{ path('faq_index')}}">
+        Retour a la liste de questions
+            
+        </a>
+
+    <h2>
+        le + de question 
+    </h2>
+
+    {% for tag in question.tag %}
+    <h4>
+        dans la categorie :  {{ tag.name }}
+    </h4>
+    {% endfor %}
+
+    <p>{{ question.body }}</p>
+
+    
+
+    <h2 id="answer">les reponses </h2>
+      
+    <hr>
+
+    <section>
+
+           
+        <div class="answer">
+            <div class="row">
+                <div class="col-3">
+                    {{answer.author}}
+                </div>
+                <div class="col">
+                    {{answer.body | raw}}
+
+                </div>
+
+            </div>
+
+
+        </div>
+            
+       
+
+    </section>
+
+    {% endif %}
 
 {% endblock %}

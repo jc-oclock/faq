@@ -54,7 +54,7 @@ class AppFixtures extends Fixture
         shuffle($tags);
         // tableau rand en amont => recuperation des 3 premiers donne une valeur unique par rapport a mt rand
         $question->addTag($tags[0]);
-        $question->addTag($tags[1]);
+        
         $question->addAnswer($answers[0]);
         $question->addAnswer($answers[1]);
         $question->addAnswer($answers[2]);

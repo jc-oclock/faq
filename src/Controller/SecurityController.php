@@ -18,29 +18,34 @@ class SecurityController extends AbstractController
    /**
      * @Route("/signin", name="app_signin")
      */
-    public function registration(Request $request, ObjectManager $manager)
+    public function registration(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
 
+        
         $user = new User();
         $form = $this->createForm(RegistrationType::class, $user);
-
         $form->handleRequest($request);
-
-        if($form->isSubmitted() && $form->isValid()) {
-
-           // $hash = $encoder->encodePassword($user, $user->getPassword());
-
-            $user->setPassword();
-
-            $manager->persist($user);
-            $manager->flush();
-
+        if ($form->isSubmitted() && $form->isValid()) {
+            $encodedPassword = $passwordEncoder->encodePassword(
+                 $user, #detecte le type d'encodage
+                 $user->getPassword() #le mot de passse a encoder
+            );
+            //j'ecrase le mot de passe en clair par celui que je vient d'encoder
+            $user->setPassword($encodedPassword);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($user);
+            $entityManager->flush();
             return $this->redirectToRoute('app_login');
         }
-       
-        return $this->render('security/signin.html.twig', ['form' => $form->createView()
+
+        return $this->render('security/signin.html.twig', [
+            'user' => $user,
+            'form' => $form->createView(),
         ]);
     }
+
+
+   
 
 
     /**
@@ -48,35 +53,18 @@ class SecurityController extends AbstractController
      */
     public function login()
     {
+        
         return $this->render('security/login.html.twig');
- 
     }
 
+
      /**
-     * @Route("/admin", name="app_admin")
+     * @Route("/admin/login", name="app_admin")
      */
-    public function admin(Request $request, ObjectManager $manager, UserPasswordEncoderInterface $encoder)
+    public function admin()
     {
-
-        $user = new User();
-        $form = $this->createForm(RegistrationTypeAdmin::class, $user);
- 
-        $form->handleRequest($request);
-
-        if($form->isSubmitted() && $form->isValid()) {
-
-            $hash = $encoder->encodePassword($user, $user->getPassword());
-
-            $user->setPassword($hash);
-
-            $manager->persist($user);
-            $manager->flush();
-
-            return $this->redirectToRoute('faq_index');
-        }
-       
-        return $this->render('security/admin.html.twig', ['form' => $form->createView()
-        ]);
+        return $this->render('security/admin.html.twig');
+        
     }
 
      

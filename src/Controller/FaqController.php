@@ -3,9 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Tag;
+use App\Entity\User;
 use App\Entity\Answer;
-use App\Entity\Question;
 
+use App\Entity\Question;
 use App\Repository\AnswerRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,11 +16,17 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class FaqController extends AbstractController
-{/**
+{   
+    
+    /**
      * @Route("/", name="faq_index", methods={"GET","POST"})
      */
-    public function index(Request $request)
+    
+    
+     public function index(Request $request)
     {   
+
+       
          $repository = $this->getDoctrine()->getRepository(Question::class);
          
          /*

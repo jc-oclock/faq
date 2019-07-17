@@ -1,8 +1,6 @@
-# config/routes.yaml
-login:
-    path:       /login
-    controller: App\Controller\SecurityController::login
-    methods: GET|POST
+#index:
+#    path: /
+#    controller: App\Controller\DefaultController::index
 
 app_logout:
     path: /logout

@@ -2,6 +2,7 @@
 
 namespace App\Controller\Backend;
 
+use App\Entity\User;
 use App\Entity\Answer;
 use App\Entity\Question;
 use App\Form\QuestionType;
@@ -20,7 +21,11 @@ class QuestionController extends AbstractController
      * @Route("/", name="question_index", methods={"GET"})
      */
     public function index(QuestionRepository $questionRepository): Response
+
+
     {
+
+        $user = new User();
         return $this->render('faq/index.html.twig', ['questions' => $questionRepository->findAll()]);
     }
     /**
@@ -53,6 +58,7 @@ class QuestionController extends AbstractController
      */
     public function show(Question $question = null): Response
     {
+        $anwer = new Answer();
         if (!$question) {
             throw $this->createNotFoundException('Question introuvable');
         }

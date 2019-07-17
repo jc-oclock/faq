@@ -22,10 +22,7 @@ class Role
      * @ORM\Column(type="string", length=50)
      */
     private $name;
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="role")
-     */
-    private $users;
+    
     
     public function __construct()
     {
